@@ -4,7 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet } from 'react-native';
 import 'react-native-gesture-handler'
 import { Icon, Text } from 'react-native-paper';
-import { Home } from './components/components';
+import { Home, AddWorkout, MyWorouts } from './components/components';
 
 const Drawer = createDrawerNavigator()
 
@@ -15,6 +15,20 @@ export default function App() {
         <Drawer.Screen 
           name='Home' 
           component={Home}
+          options={{
+            drawerIcon: () => <Icon source={'home'} size={24}/>
+          }}
+        />
+        <Drawer.Screen 
+          name='AddWorkout' 
+          component={AddWorkout}
+          options={{
+            drawerIcon: () => <Icon source={'home'} size={24}/>
+          }}
+        />
+        <Drawer.Screen 
+          name='MyWorkouts' 
+          component={MyWorouts}
           options={{
             drawerIcon: () => <Icon source={'home'} size={24}/>
           }}
