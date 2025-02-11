@@ -41,20 +41,30 @@ export function Home(){
       {label:'Cross counry skiing', value: 'cross counry skiing'}
     ]
 
+    const [date, setDate] = useState()
     const [workout, setWorkout] = useState('')
     const [distance, setDistance] = useState('')
     const [duration, setDuration] = useState('')
-    const [date, setDate] = useState()
 
-    function dateSelected(day){
-      setDate(day)
+    const [data, setData] = useState([])
+
+    function addToList(){
+      
+      const newWorkout = {
+        date: date?.dateString || '',
+        workout,
+        distance: parseFloat(distance) || 0, // Ensure distance is a number
+        duration: parseFloat(duration) || 0  // Ensure duration is a number
+      };
+      console.log(`Distance: ${distance}, Duration: ${duration}`); // Debug: log the distance and duration values
+      setData([...data, newWorkout]);
     }
 
     return(
       <PaperProvider>
         <View>
           <Text variant="bodyLarge">Pick the date:</Text>
-          <Calendar onDayPress={dateSelected}/>
+          <Calendar onDayPress={setDate}/>
           <Text variant="bodyLarge">{date ? 'Date: ' + date.dateString : ''}</Text>
           <Dropdown
             placeholder="Select Workout"
@@ -67,20 +77,25 @@ export function Home(){
             label='Distance'
             placeholder='km'
             value={distance}
-            onChange={setDistance}
+            onChangeText={setDistance}
           />
           <TextInput
             mode='flat'
             label='Duration'
             placeholder='min'
             value={duration}
-            onChange={setDuration}
+            onChangeText={setDuration}
           />
           <Button 
-          mode="contained" 
-          onPress={() => console.log('Pressed')}>
+            mode="contained" 
+            onPress={addToList}>
             Save
           </Button>
+          {data.map((item, index) => (
+          <Text key={index}>
+            {`Date: ${item.date}, Workout: ${item.workout}, Distance: ${item.distance.toString()} km, Duration: ${item.duration.toString()} min`}
+          </Text>
+        ))}
         </View>
       </PaperProvider>
     )
