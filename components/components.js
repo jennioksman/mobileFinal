@@ -1,9 +1,11 @@
 import { useNavigation } from "@react-navigation/native";
-import { useState, useCallback } from "react";
+import { useState, useContext } from "react";
 import { View, TouchableOpacity, Pressable } from "react-native"
 import { Text, Card,  PaperProvider, TextInput, Button, Modal } from "react-native-paper"
 import { Dropdown } from "react-native-paper-dropdown";
 import { Calendar } from 'react-native-calendars'
+import { Context } from "./context";
+
 
 
 
@@ -32,6 +34,8 @@ export function Home(){
 
   export function AddWorkout(){
 
+    const { data, setData } = useContext(Context)
+
     const OPTIONS = [
       {label: 'Bicycling', value: 'bicycling'}, 
       {label:'Running', value: 'running'}, 
@@ -45,8 +49,6 @@ export function Home(){
     const [workout, setWorkout] = useState('')
     const [distance, setDistance] = useState('')
     const [duration, setDuration] = useState('')
-
-    const [data, setData] = useState([])
 
     function addToList(){
       
@@ -102,8 +104,18 @@ export function Home(){
   }
 
   export function MyWorouts(){
+
+    const { data } = useContext(Context)
+  
     return(
-      <Text>My Workouts</Text>
+      <View>
+        <Text>My Workouts</Text>
+        {data.map((item, index) => (
+          <Text key={index}>
+            {`Date: ${item.date}, Workout: ${item.workout}, Distance: ${item.distance.toString()} km, Duration: ${item.duration.toString()} min`}
+          </Text>
+        ))}
+      </View>
     )
   }
   
