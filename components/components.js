@@ -1,9 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
 import { useState, useCallback } from "react";
-import { View, TouchableOpacity } from "react-native"
-import { Text, Card,  PaperProvider, TextInput, Button } from "react-native-paper"
+import { View, TouchableOpacity, Pressable } from "react-native"
+import { Text, Card,  PaperProvider, TextInput, Button, Modal } from "react-native-paper"
 import { Dropdown } from "react-native-paper-dropdown";
-import { DatePickerModal } from "react-native-paper-dates";
+import { Calendar } from 'react-native-calendars'
+
 
 
 export function Home(){
@@ -43,10 +44,18 @@ export function Home(){
     const [workout, setWorkout] = useState('')
     const [distance, setDistance] = useState('')
     const [duration, setDuration] = useState('')
+    const [date, setDate] = useState()
+
+    function dateSelected(day){
+      setDate(day)
+    }
 
     return(
       <PaperProvider>
         <View>
+          <Text variant="bodyLarge">Pick the date:</Text>
+          <Calendar onDayPress={dateSelected}/>
+          <Text variant="bodyLarge">{date ? 'Date: ' + date.dateString : ''}</Text>
           <Dropdown
             placeholder="Select Workout"
             options={OPTIONS}
