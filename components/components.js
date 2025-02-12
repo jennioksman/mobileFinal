@@ -5,6 +5,8 @@ import { Text, Card,  PaperProvider, TextInput, Button, Modal } from "react-nati
 import { Dropdown } from "react-native-paper-dropdown";
 import { Calendar } from 'react-native-calendars'
 import { Context } from "./context";
+import { FlatList } from "react-native"; 
+import { styles } from "../styles/Style";
 
 
 
@@ -106,16 +108,25 @@ export function Home(){
   export function MyWorouts(){
 
     const { data } = useContext(Context)
-  
-    return(
-      <View>
-        <Text>My Workouts</Text>
-        {data.map((item, index) => (
-          <Text key={index}>
-            {`Date: ${item.date}, Workout: ${item.workout}, Distance: ${item.distance.toString()} km, Duration: ${item.duration.toString()} min`}
-          </Text>
-        ))}
+
+    const renderItem = ({ item }) => (
+      <View style={styles.item}>
+        <Text variant="bodyLarge">{`Date: ${item.date}, Workout: ${item.workout}, Distance: ${item.distance.toString()} km, Duration: ${item.duration.toString()} min`}</Text>
       </View>
     )
-  }
+
+    const totalDistance = () => {
+      
+    }
   
+    return (
+      <View>
+        <Text variant="headlineSmall">My Workouts</Text>
+        <FlatList
+          data={data}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      </View>
+    );
+  }
