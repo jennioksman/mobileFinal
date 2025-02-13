@@ -1,12 +1,12 @@
-import { useNavigation } from "@react-navigation/native";
-import { useState, useContext } from "react";
+import { useNavigation } from "@react-navigation/native"
+import { useState, useContext, useEffect } from "react"
 import { View, TouchableOpacity, Pressable } from "react-native"
-import { Text, Card,  PaperProvider, TextInput, Button, Modal } from "react-native-paper"
-import { Dropdown } from "react-native-paper-dropdown";
+import { Text, Card,  PaperProvider, TextInput, Button, Modal, Icon } from "react-native-paper"
+import { Dropdown } from "react-native-paper-dropdown"
 import { Calendar } from 'react-native-calendars'
-import { Context } from "./context";
-import { FlatList } from "react-native"; 
-import { styles } from "../styles/Style";
+import { DataContext, TotalDistContext, TotalDurContext } from "./context"
+import { FlatList } from "react-native" 
+import { styles } from "../styles/Style"
 
 
 
@@ -36,7 +36,10 @@ export function Home(){
 
   export function AddWorkout(){
 
-    const { data, setData } = useContext(Context)
+    const { data, setData } = useContext(DataContext)
+    const { setTotalDist } = useContext(TotalDistContext)
+    const { setTotalDur } = useContext(TotalDurContext)
+    
 
     const OPTIONS = [
       {label: 'Bicycling', value: 'bicycling'}, 
@@ -51,17 +54,22 @@ export function Home(){
     const [workout, setWorkout] = useState('')
     const [distance, setDistance] = useState('')
     const [duration, setDuration] = useState('')
+    
 
     function addToList(){
-      
+
+      const parsedDistance = parseFloat(distance) || 0
+      const parsedDuration = parseFloat(duration) || 0
+       
       const newWorkout = {
         date: date?.dateString || '',
         workout,
-        distance: parseFloat(distance) || 0, // Ensure distance is a number
-        duration: parseFloat(duration) || 0  // Ensure duration is a number
-      };
-      console.log(`Distance: ${distance}, Duration: ${duration}`); // Debug: log the distance and duration values
-      setData([...data, newWorkout]);
+        distance: parsedDistance,
+        duration: parsedDuration 
+      }
+      setData([...data, newWorkout])
+      setTotalDist(prev => (prev || 0) + parsedDistance)
+      setTotalDur(prev => (prev || 0)  + parsedDuration)
     }
 
     return(
@@ -82,6 +90,7 @@ export function Home(){
             placeholder='km'
             value={distance}
             onChangeText={setDistance}
+            keyboardType="numeric"
           />
           <TextInput
             mode='flat'
@@ -89,17 +98,13 @@ export function Home(){
             placeholder='min'
             value={duration}
             onChangeText={setDuration}
+            keyboardType="numeric"
           />
           <Button 
             mode="contained" 
             onPress={addToList}>
             Save
           </Button>
-          {data.map((item, index) => (
-          <Text key={index}>
-            {`Date: ${item.date}, Workout: ${item.workout}, Distance: ${item.distance.toString()} km, Duration: ${item.duration.toString()} min`}
-          </Text>
-        ))}
         </View>
       </PaperProvider>
     )
@@ -107,26 +112,31 @@ export function Home(){
 
   export function MyWorouts(){
 
-    const { data } = useContext(Context)
+    const { data } = useContext(DataContext)
+    const { totalDist } = useContext(TotalDistContext)
+    const { totalDur } = useContext(TotalDurContext)
 
     const renderItem = ({ item }) => (
       <View style={styles.item}>
-        <Text variant="bodyLarge">{`Date: ${item.date}, Workout: ${item.workout}, Distance: ${item.distance.toString()} km, Duration: ${item.duration.toString()} min`}</Text>
+        <Text variant="bodyLarge">{`Date: ${item.date}`}</Text>
+        <Text variant="bodyLarge">{`Workout: ${item.workout}`}</Text>
+        <Text variant="bodyLarge">{`Distance: ${item.distance.toString()} km`}</Text>
+        <Text variant="bodyLarge">{`Duration: ${item.duration.toString()} min`}</Text>
       </View>
     )
-
-    const totalDistance = () => {
-      
-    }
   
     return (
       <View>
         <Text variant="headlineSmall">My Workouts</Text>
+        <View style={styles.item}>
+          <Text variant="bodyLarge">{`Total Distance: ${totalDist} km`}</Text>
+          <Text variant="bodyLarge">{`Total Duration: ${totalDur} min`}</Text>
+        </View>
         <FlatList
           data={data}
           renderItem={renderItem}
           keyExtractor={(item, index) => index.toString()}
         />
       </View>
-    );
+    )
   }
