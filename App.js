@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { StatusBar } from 'expo-status-bar'
 import 'react-native-gesture-handler'
 import { Icon, Text } from 'react-native-paper'
-import { Home, AddWorkout, MyWorouts } from './components/components'
+import { Home, AddWorkout, MyWorouts, MyComponent } from './components/components'
 import { DataProvider, TotalDistProvider, TotalDurProvider } from './components/context'
 
 const Drawer = createDrawerNavigator()
