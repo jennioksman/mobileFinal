@@ -184,11 +184,15 @@ export function MyWorouts() {
           <Text key={workout}>{`${workout}: ${dur} min`}</Text>
         ))}
       </View>
-      <FlatList
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => index.toString()}
-      />
+      <ScrollView>
+        {data.map((item, index) => (
+          <List.Item
+            key={index}
+            title={item.workout}
+            description={`Date: ${item.date}, Distance: ${item.distance} km, Duration: ${item.duration} min`}
+          />
+        ))}
+      </ScrollView>
     </View>
   )
 }
