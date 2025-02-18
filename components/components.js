@@ -2,13 +2,10 @@ import { useNavigation } from "@react-navigation/native"
 import { useState, useContext, useEffect } from "react"
 import { View, TouchableOpacity, Pressable, ScrollView } from "react-native"
 import { Text, Card, PaperProvider, TextInput, Button, Modal, Portal, Icon, List } from "react-native-paper"
-import { Dropdown } from "react-native-paper-dropdown"
 import { Calendar } from 'react-native-calendars'
 import { DataContext, TotalDistContext, TotalDurContext } from "./context"
 import { FlatList } from "react-native"
 import { styles } from "../styles/Style"
-
-
 
 
 export function Home() {
@@ -42,19 +39,30 @@ export function AddWorkout() {
 
 
   const OPTIONS = [
-    { label: 'Endurance Training', value: 'endurance' },
-    { label: 'Strength Training', value: 'strength' },
-    { label: 'Body Care', value: 'body' },
+    { label: 'Bicycling', value: 'Bicycling' },
+    { label: 'Running', value: 'Running' },
+    { label: 'Cross Country Skiing', value: 'Cross Country Skiing' },
+    { label: 'Swimming', value: 'Swimming' },
+    { label: 'Gym', value: 'Gym' },
+    { label: 'Kettlebell', value: 'Kettlebell' },
+    { label: 'Cross fit', value: 'Cross fit' },
+    { label: 'Yoga', value: 'Yoga' },
+    { label: 'Bodybalance', value: 'Bodybalance' },
+    { label: 'Pilates', value: 'Pilates' },
+    { label: 'Bodypump', value: 'bodypump' },
+    { label: 'Bodytotal', value: 'bodytotal' },
+    { label: 'Dance me up', value: 'dance me up' }
   ]
 
   const [date, setDate] = useState()
   const [workout, setWorkout] = useState('')
   const [distance, setDistance] = useState('')
   const [duration, setDuration] = useState('')
-  const [list, setList] = useState([])
+
 
   const [visible, setVisible] = useState(false);
   const [alertVisible, setAlertVisible] = useState(false)
+
 
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
@@ -62,12 +70,6 @@ export function AddWorkout() {
 
   const showAlert = () => setAlertVisible(true);
   const hideAlert = () => setAlertVisible(false);
-
-  const workoutLists = {
-    endurance: ["Bicycling", "Running", "Cross Country Skiing", "Swimming"],
-    strength: ["Gym", "Kettlebell", "Calisthenics"],
-    body: ["Yoga", "Bodybalance", "Pilates"],
-  }
 
   function addToList() {
 
@@ -99,25 +101,24 @@ export function AddWorkout() {
         <Text variant="bodyLarge">Select the date:</Text>
         <Calendar onDayPress={setDate} />
         <Text variant="bodyLarge">{date ? 'Date: ' + date.dateString : ''}</Text>
-        <Dropdown
-          placeholder="Select Workout Type"
-          options={OPTIONS}
-          value={workout}
-          onSelect={(value) => {
-            setWorkout(value)
-            setList(workoutLists[value] || [])
-          }}
-        />
         <Portal>
           <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
-            {list.map((item, index) => (
-              <Text key={index} variant="bodyLarge">{item}</Text>
+            {OPTIONS.map((item, index) => (
+              <List.Item
+                key={index}
+                title={item.label}
+                onPress={() => {
+                  setWorkout(item.value)
+                  hideModal()
+                }}
+              />
             ))}
           </Modal>
         </Portal>
         <Button mode="contained" onPress={showModal}>
-          Show
+          Select Workout
         </Button>
+        {workout ? <Text>Workout: {workout}</Text> : null}
         <TextInput
           mode='flat'
           label='Distance'
@@ -136,15 +137,15 @@ export function AddWorkout() {
         />
         <Button
           mode="contained"
-          onPress={()=> {
+          onPress={() => {
             addToList()
             showAlert()
           }}>
           Save
         </Button>
         <Portal>
-          <Modal visible={alertVisible} 
-            onDismiss={hideAlert} 
+          <Modal visible={alertVisible}
+            onDismiss={hideAlert}
             contentContainerStyle={containerStyle}>
             <Text variant="bodyLarge">Workout saved!</Text>
           </Modal>
@@ -160,27 +161,34 @@ export function MyWorouts() {
   const { totalDist } = useContext(TotalDistContext)
   const { totalDur } = useContext(TotalDurContext)
 
-    const renderItem = ({ item }) => (
+  const renderItem = ({ item }) => (
+    <View style={styles.item}>
+      <Text variant="bodyLarge">{`Date: ${item.date}`}</Text>
+      <Text variant="bodyLarge">{`Workout: ${item.workout}`}</Text>
+      <Text variant="bodyLarge">{`Distance: ${item.distance.toString()} km`}</Text>
+      <Text variant="bodyLarge">{`Duration: ${item.duration.toString()} min`}</Text>
+    </View>
+  )
+
+  return (
+    <View>
+      <Text variant="headlineSmall">My Workouts</Text>
       <View style={styles.item}>
-        <Text variant="bodyLarge">{`Date: ${item.date}`}</Text>
-        <Text variant="bodyLarge">{`Workout: ${item.workout}`}</Text>
-        <Text variant="bodyLarge">{`Distance: ${item.distance.toString()} km`}</Text>
-        <Text variant="bodyLarge">{`Duration: ${item.duration.toString()} min`}</Text>
+        <Text variant="bodyLarge">Total Distance:</Text>
+        {Object.entries(totalDist).map(([workout, dist]) => (
+          <Text key={workout}>{`${workout}: ${dist} km`}</Text>
+        ))}
+
+        <Text variant="bodyLarge">Total Duration:</Text>
+        {Object.entries(totalDur).map(([workout, dur]) => (
+          <Text key={workout}>{`${workout}: ${dur} min`}</Text>
+        ))}
       </View>
-    )
-  
-    return (
-      <View>
-        <Text variant="headlineSmall">My Workouts</Text>
-        <View style={styles.item}>
-          <Text variant="bodyLarge">{`Total Distance: ${totalDist} km`}</Text>
-          <Text variant="bodyLarge">{`Total Duration: ${totalDur} min`}</Text>
-        </View>
-        <FlatList
-          data={data}
-          renderItem={renderItem}
-          keyExtractor={(item, index) => index.toString()}
-        />
-      </View>
-    )
-  }
+      <FlatList
+        data={data}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => index.toString()}
+      />
+    </View>
+  )
+}

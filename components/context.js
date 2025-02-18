@@ -15,11 +15,7 @@ export const DataProvider = ({ children }) => {
 export const TotalDistContext = createContext()
 
 export const TotalDistProvider = ({ children }) => {
-  const [totalDist, setTotalDist] = useState({
-    ensurance: 0,
-    strenght: 0,
-    body: 0
-  })
+  const [totalDist, setTotalDist] = useState([])
 
   return (
     <TotalDistContext.Provider value={{ totalDist, setTotalDist }}>
@@ -31,11 +27,7 @@ export const TotalDistProvider = ({ children }) => {
 export const TotalDurContext = createContext()
 
 export const TotalDurProvider = ({ children }) => {
-  const [totalDur, setTotalDur] = useState({
-    ensurance: 0,
-    strenght: 0,
-    body: 0
-  });
+  const [totalDur, setTotalDur] = useState([])
 
   return (
     <TotalDurContext.Provider value={{ totalDur, setTotalDur }}>
