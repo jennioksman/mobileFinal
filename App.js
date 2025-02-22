@@ -16,7 +16,15 @@ export default function App() {
         <TotalDistProvider>
           <TotalDurProvider>
             <NavigationContainer>
-              <Drawer.Navigator>
+              <Drawer.Navigator
+                screenOptions={{
+                  headerTitleAlign: 'center',
+                  headerStyle: { backgroundColor: Theme.colors.primary },
+                  headerTintColor: 'white', // Otsikon väri
+                  drawerActiveTintColor: Theme.colors.primary, // Aktiivisen kohdan väri
+                  drawerInactiveTintColor: Theme.colors.secondary, // 
+                }}
+              >
                 <Drawer.Screen 
                   name='Home' 
                   component={Home}
@@ -28,14 +36,14 @@ export default function App() {
                   name='AddWorkout' 
                   component={AddWorkout}
                   options={{
-                    drawerIcon: () => <Icon source={'home'} size={24}/>
+                    drawerIcon: () => <Icon source={'plus-circle'} size={24}/>
                   }}
                 />
                 <Drawer.Screen 
                   name='MyWorkouts' 
                   component={MyWorouts}
                   options={{
-                    drawerIcon: () => <Icon source={'home'} size={24}/>
+                    drawerIcon: () => <Icon source={'yoga'} size={24}/>
                   }}
                 />
               </Drawer.Navigator>

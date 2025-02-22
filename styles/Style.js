@@ -41,6 +41,10 @@ export const styles = StyleSheet.create({
       marginVertical: 10,
       marginHorizontal: 100
     },
+    headlineHome: {
+      marginVertical: 10,
+      marginHorizontal: 110
+    },
     subhedline:{
       padding:10,
     

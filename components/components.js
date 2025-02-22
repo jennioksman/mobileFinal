@@ -14,7 +14,7 @@ export function Home() {
 
   return (
     <PaperProvider theme={Theme}>
-      <Text variant='headlineMedium' style={styles.headline}>Welcome</Text>
+      <Text variant='headlineMedium' style={styles.headlineHome}>Wellcome</Text>
       <Card style={styles.card}>
         <Card.Cover source={require('../assets/crossfit.jpg')} />
         <TouchableOpacity onPress={() => navigation.navigate('AddWorkout')}>
@@ -36,6 +36,8 @@ export function AddWorkout() {
   const { data, setData } = useContext(DataContext)
   const { setTotalDist } = useContext(TotalDistContext)
   const { setTotalDur } = useContext(TotalDurContext)
+
+  const navigation = useNavigation()
 
 
   const OPTIONS = [
@@ -170,6 +172,12 @@ export function AddWorkout() {
           }}>
           Save
         </Button>
+        <Button
+          style={styles.button}
+          mode="contained"
+          onPress={() => navigation.navigate('MyWorkouts')}>
+          Go to My Workouts
+        </Button>
         <Portal>
           <Modal visible={alertVisible}
             onDismiss={hideAlert}
@@ -188,22 +196,28 @@ export function MyWorouts() {
   const { totalDist } = useContext(TotalDistContext)
   const { totalDur } = useContext(TotalDurContext)
 
+  const hasWorkouts = Object.keys({ ...totalDist, ...totalDur }).length > 0
+
   return (
     <PaperProvider theme={Theme}>
       <Text variant="headlineSmall" style={styles.headline}>My Workouts</Text>
-      <View style={[styles.item, { backgroundColor: Theme.colors.outline }]}>
-        <Text variant="bodyLarge">You have been</Text>
-        {Object.values(totalDist).some(dist => dist > 0)
-          ? (Object.entries(totalDist).map(([workout, dist]) => (
-            <Text variant="bodyLarge" key={workout}>{`${workout}: ${dist} km`}</Text>
-          ))
-        ) : (Object.entries(totalDur).map(([workout, dur]) => (
-            <Text variant="bodyLarge" key={workout}>{`${workout}: ${dur} min`}</Text>
-          ))
-        )
-        }
-        <Text variant="bodyLarge">in total! Nice work!</Text>
-      </View>
+      {hasWorkouts && (
+        <View style={[styles.item, { backgroundColor: Theme.colors.outline }]}>
+          <Text variant="bodyLarge">You have been</Text>
+
+          {Object.keys({ ...totalDist, ...totalDur }).map((workout) => {
+            const dist = totalDist[workout] || 0;
+            const dur = totalDur[workout] || 0;
+
+            return (
+              <Text key={workout} variant="bodyLarge">
+                {`${workout}: ${dist} km, ${dur} min`}
+              </Text>
+            );
+          })}
+          <Text variant="bodyLarge">in total!</Text>
+        </View>
+      )}
       <ScrollView>
         {data.map((item, index) => (
           <View key={index} style={[styles.item2, { backgroundColor: Theme.colors.surfaceVariant }]}>
