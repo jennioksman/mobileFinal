@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native"
-import { useState, useContext, useEffect } from "react"
-import { View, TouchableOpacity, Pressable, ScrollView } from "react-native"
-import { Text, Card, PaperProvider, TextInput, Button, Modal, Portal, Icon, List } from "react-native-paper"
+import { useState, useContext } from "react"
+import { View, TouchableOpacity, ScrollView } from "react-native"
+import { Text, Card, PaperProvider, TextInput, Button, Modal, Portal, List } from "react-native-paper"
 import { Calendar } from 'react-native-calendars'
 import { DataContext, TotalDistContext, TotalDurContext } from "./context"
 import { FlatList } from "react-native"
@@ -39,7 +39,6 @@ export function AddWorkout() {
 
   const navigation = useNavigation()
 
-
   const OPTIONS = [
     { label: 'Bicycling', value: 'Bicycling' },
     { label: 'Running', value: 'Running' },
@@ -51,16 +50,17 @@ export function AddWorkout() {
     { label: 'Yoga', value: 'Yoga' },
     { label: 'Bodybalance', value: 'Bodybalance' },
     { label: 'Pilates', value: 'Pilates' },
-    { label: 'Bodypump', value: 'bodypump' },
-    { label: 'Bodytotal', value: 'bodytotal' },
-    { label: 'Dance me up', value: 'dance me up' },
-    { label: 'Yoga', value: 'Yoga' },
-    { label: 'Bodybalance', value: 'Bodybalance' },
-    { label: 'Pilates', value: 'Pilates' },
-    { label: 'Bodypump', value: 'bodypump' },
-    { label: 'Bodytotal', value: 'bodytotal' },
-    { label: 'Dance me up', value: 'dance me up' }
+    { label: 'Bodypump', value: 'Bodypump' },
+    { label: 'Bodytotal', value: 'Bodytotal' },
+    { label: 'Dance me up', value: 'Dance me up' },
+    { label: 'Walking', value: 'Walking' },
+    { label: 'Indoor cycling', value: 'Indoor cycling' },
+    { label: 'Fitball', value: 'Fitball' },
+    { label: 'Down hill skiing', value: 'Down hill skiing' },
+    { label: 'Snowboarding', value: 'Snowboarding' }
   ]
+
+  const orderedOptions = OPTIONS.sort((a, b) => a.label.localeCompare(b.label))
 
   const [date, setDate] = useState()
   const [workout, setWorkout] = useState('')
@@ -68,20 +68,20 @@ export function AddWorkout() {
   const [duration, setDuration] = useState('')
 
 
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false)
   const [alertVisible, setAlertVisible] = useState(false)
 
 
-  const showModal = () => setVisible(true);
-  const hideModal = () => setVisible(false);
-  const containerStyle = { backgroundColor: 'white', padding: 20 };
+  const showModal = () => setVisible(true)
+  const hideModal = () => setVisible(false)
+  
 
-  const showAlert = () => setAlertVisible(true);
-  const hideAlert = () => setAlertVisible(false);
+  const showAlert = () => setAlertVisible(true)
+  const hideAlert = () => setAlertVisible(false)
 
   const handleDayPress = (day) => {
-    setDate(day.dateString); // Tallennetaan valittu päivä oikeassa muodossa
-  };
+    setDate(day.dateString)
+  }
 
   function addToList() {
 
@@ -103,8 +103,6 @@ export function AddWorkout() {
       ...prev,
       [workout]: (prev[workout] || 0) + parsedDuration
     }))
-
-
   }
 
 
@@ -122,7 +120,7 @@ export function AddWorkout() {
         <Portal>
           <Modal visible={visible} onDismiss={hideModal} style={styles.modal}>
             <FlatList
-              data={OPTIONS}
+              data={orderedOptions}
               keyExtractor={(item) => item.value}
               renderItem={({ item }) => (
                 <List.Item
@@ -179,9 +177,10 @@ export function AddWorkout() {
           Go to My Workouts
         </Button>
         <Portal>
-          <Modal visible={alertVisible}
+          <Modal 
+            visible={alertVisible}
             onDismiss={hideAlert}
-            contentContainerStyle={containerStyle}>
+            contentContainerStyle={styles.alertModal}>
             <Text variant="bodyLarge">Workout saved!</Text>
           </Modal>
         </Portal>
@@ -190,7 +189,7 @@ export function AddWorkout() {
   )
 }
 
-export function MyWorouts() {
+export function MyWorkouts() {
 
   const { data } = useContext(DataContext)
   const { totalDist } = useContext(TotalDistContext)
@@ -200,21 +199,19 @@ export function MyWorouts() {
 
   return (
     <PaperProvider theme={Theme}>
-      <Text variant="headlineSmall" style={styles.headline}>My Workouts</Text>
       {hasWorkouts && (
         <View style={[styles.item, { backgroundColor: Theme.colors.outline }]}>
           <Text variant="bodyLarge">You have been</Text>
-
           {Object.keys({ ...totalDist, ...totalDur }).map((workout) => {
-            const dist = totalDist[workout] || 0;
-            const dur = totalDur[workout] || 0;
-
+            const dist = totalDist[workout] || 0
+            const dur = totalDur[workout] || 0
             return (
               <Text key={workout} variant="bodyLarge">
                 {`${workout}: ${dist} km, ${dur} min`}
               </Text>
-            );
-          })}
+            )
+          })
+          }
           <Text variant="bodyLarge">in total!</Text>
         </View>
       )}

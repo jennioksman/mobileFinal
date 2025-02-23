@@ -21,7 +21,7 @@ export const TotalDistProvider = ({ children }) => {
     <TotalDistContext.Provider value={{ totalDist, setTotalDist }}>
       {children}
     </TotalDistContext.Provider>
-  );
+  )
 }
 
 export const TotalDurContext = createContext()

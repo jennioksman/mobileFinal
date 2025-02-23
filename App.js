@@ -2,10 +2,10 @@ import { createDrawerNavigator } from '@react-navigation/drawer'
 import { NavigationContainer } from '@react-navigation/native'
 import { StatusBar } from 'expo-status-bar'
 import 'react-native-gesture-handler'
-import { Icon, PaperProvider, MD3LightTheme, Text } from 'react-native-paper'
-import { Home, AddWorkout, MyWorouts, MyComponent } from './components/components'
+import { Icon, PaperProvider } from 'react-native-paper'
+import { Home, AddWorkout, MyWorkouts } from './components/components'
 import { DataProvider, TotalDistProvider, TotalDurProvider } from './components/context'
-import { styles, Theme } from './styles/Style'
+import { Theme } from './styles/Style'
 
 const Drawer = createDrawerNavigator()
 
@@ -20,9 +20,9 @@ export default function App() {
                 screenOptions={{
                   headerTitleAlign: 'center',
                   headerStyle: { backgroundColor: Theme.colors.primary },
-                  headerTintColor: 'white', // Otsikon väri
-                  drawerActiveTintColor: Theme.colors.primary, // Aktiivisen kohdan väri
-                  drawerInactiveTintColor: Theme.colors.secondary, // 
+                  headerTintColor: 'white', 
+                  drawerActiveTintColor: Theme.colors.primary, 
+                  drawerInactiveTintColor: Theme.colors.secondary 
                 }}
               >
                 <Drawer.Screen 
@@ -41,7 +41,7 @@ export default function App() {
                 />
                 <Drawer.Screen 
                   name='MyWorkouts' 
-                  component={MyWorouts}
+                  component={MyWorkouts}
                   options={{
                     drawerIcon: () => <Icon source={'yoga'} size={24}/>
                   }}
@@ -52,7 +52,7 @@ export default function App() {
         </TotalDistProvider>
       </DataProvider>
     </PaperProvider>
-  );
+  )
 }
 
 

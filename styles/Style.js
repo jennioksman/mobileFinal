@@ -1,14 +1,12 @@
-import { StyleSheet, TouchableOpacity } from "react-native"
-import { Card, configureFonts ,MD3DarkTheme,MD3LightTheme } from "react-native-paper"
+import { StyleSheet } from "react-native"
+import { MD3DarkTheme,MD3LightTheme } from "react-native-paper"
 
 
 export const styles = StyleSheet.create({
     container: {
-      
       margin: 10 
     },
     item: {
-      
       padding: 20,
       marginVertical: 8,
       marginHorizontal: 16,
@@ -47,17 +45,16 @@ export const styles = StyleSheet.create({
     },
     subhedline:{
       padding:10,
-    
     },
     add: {
       margin: 10,
       gap: 10
     },
     select: {
+      borderTopLeftRadius: 2,
+      borderTopRightRadius: 2,
       borderBottomWidth: 0.5,
-      paddingVertical: 17,
-      paddingHorizontal: 15
-
+      padding:15
     },
     button: {
       marginHorizontal: 30
@@ -67,6 +64,12 @@ export const styles = StyleSheet.create({
       backgroundColor: '#e8e5e8'
     },
     selectedDayBackgroundColor: {
+      backgroundColor: '#e8e5e8'
+    },
+    alertModal: {
+      marginHorizontal: 20,
+      padding: 20,
+      alignItems: 'center',
       backgroundColor: '#e8e5e8'
     }
   })
