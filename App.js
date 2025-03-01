@@ -1,10 +1,13 @@
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { NavigationContainer } from '@react-navigation/native'
-import { StatusBar } from 'expo-status-bar'
 import 'react-native-gesture-handler'
 import { Icon, PaperProvider } from 'react-native-paper'
-import { Home, AddWorkout, MyWorkouts } from './components/components'
-import { DataProvider, TotalDistProvider, TotalDurProvider } from './components/context'
+import { Home } from './components/Home'
+import { AddWorkout } from './components/AddWorkout'
+import { MyWorkouts } from './components/MyWorkouts'
+import { DataProvider } from "./contexts/DataContext"
+import { TotalDurProvider } from "./contexts/TotalDurContext"
+import { TotalDistProvider} from "./contexts/TotalDistContext"
 import { Theme } from './styles/Style'
 
 const Drawer = createDrawerNavigator()
