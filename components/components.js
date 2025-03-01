@@ -74,7 +74,7 @@ export function AddWorkout() {
 
   const showModal = () => setVisible(true)
   const hideModal = () => setVisible(false)
-  
+
 
   const showAlert = () => setAlertVisible(true)
   const hideAlert = () => setAlertVisible(false)
@@ -108,83 +108,85 @@ export function AddWorkout() {
 
   return (
     <PaperProvider theme={Theme} >
-      <View style={styles.add}>
-        <Text style={styles.subhedline} variant="bodyLarge">Select the date:</Text>
-        <Calendar
-          onDayPress={handleDayPress}
-          markingType="custom"
-          markedDates={{
-            [date]: { selected: true, selectedColor: Theme.colors.outline }
-          }}
-        />
-        <Portal>
-          <Modal visible={visible} onDismiss={hideModal} style={styles.modal}>
-            <FlatList
-              data={orderedOptions}
-              keyExtractor={(item) => item.value}
-              renderItem={({ item }) => (
-                <List.Item
-                  title={item.label}
-                  onPress={() => {
-                    setWorkout(item.value);
-                    hideModal();
-                  }}
-                />
-              )}
-            />
-          </Modal>
-        </Portal>
-        <TouchableOpacity onPress={showModal}>
-          <Text
-            variant="bodyLarge"
-            style={[styles.select, { backgroundColor: Theme.colors.surfaceVariant }]}>
-            {workout ? `Workout:  ${workout}` : `Select Workout`}
-          </Text>
-        </TouchableOpacity>
-        <TextInput
-          mode='flat'
-          label='Distance'
-          placeholder='km'
-          value={distance}
-          onChangeText={setDistance}
-          keyboardType="numeric"
-        />
-        <TextInput
-          mode='flat'
-          label='Duration'
-          placeholder='min'
-          value={duration}
-          onChangeText={setDuration}
-          keyboardType="numeric"
-        />
-        <Button
-          style={styles.button}
-          mode="contained"
-          onPress={() => {
-            addToList()
-            showAlert()
-            setDate('')
-            setWorkout('')
-            setDistance('')
-            setDuration('')
-          }}>
-          Save
-        </Button>
-        <Button
-          style={styles.button}
-          mode="contained"
-          onPress={() => navigation.navigate('MyWorkouts')}>
-          Go to My Workouts
-        </Button>
-        <Portal>
-          <Modal 
-            visible={alertVisible}
-            onDismiss={hideAlert}
-            contentContainerStyle={styles.alertModal}>
-            <Text variant="bodyLarge">Workout saved!</Text>
-          </Modal>
-        </Portal>
-      </View>
+      <ScrollView >
+        <View style={styles.add}>
+          <Text style={styles.subhedline} variant="bodyLarge">Select the date:</Text>
+          <Calendar
+            onDayPress={handleDayPress}
+            markingType="custom"
+            markedDates={{
+              [date]: { selected: true, selectedColor: Theme.colors.outline }
+            }}
+          />
+          <Portal>
+            <Modal visible={visible} onDismiss={hideModal} style={styles.modal}>
+              <FlatList
+                data={orderedOptions}
+                keyExtractor={(item) => item.value}
+                renderItem={({ item }) => (
+                  <List.Item
+                    title={item.label}
+                    onPress={() => {
+                      setWorkout(item.value);
+                      hideModal();
+                    }}
+                  />
+                )}
+              />
+            </Modal>
+          </Portal>
+          <TouchableOpacity onPress={showModal}>
+            <Text
+              variant="bodyLarge"
+              style={[styles.select, { backgroundColor: Theme.colors.surfaceVariant }]}>
+              {workout ? `Workout:  ${workout}` : `Select Workout`}
+            </Text>
+          </TouchableOpacity>
+          <TextInput
+            mode='flat'
+            label='Distance'
+            placeholder='km'
+            value={distance}
+            onChangeText={setDistance}
+            keyboardType="numeric"
+          />
+          <TextInput
+            mode='flat'
+            label='Duration'
+            placeholder='min'
+            value={duration}
+            onChangeText={setDuration}
+            keyboardType="numeric"
+          />
+          <Button
+            style={styles.button}
+            mode="contained"
+            onPress={() => {
+              addToList()
+              showAlert()
+              setDate('')
+              setWorkout('')
+              setDistance('')
+              setDuration('')
+            }}>
+            Save
+          </Button>
+          <Button
+            style={styles.button}
+            mode="contained"
+            onPress={() => navigation.navigate('MyWorkouts')}>
+            Go to My Workouts
+          </Button>
+          <Portal>
+            <Modal
+              visible={alertVisible}
+              onDismiss={hideAlert}
+              contentContainerStyle={styles.alertModal}>
+              <Text variant="bodyLarge">Workout saved!</Text>
+            </Modal>
+          </Portal>
+        </View>
+      </ScrollView>
     </PaperProvider>
   )
 }
